@@ -43,3 +43,4 @@ export const events = pgTable(
     index('events_payload_gin_idx').using('gin', table.payload),
   ]
 );
+
