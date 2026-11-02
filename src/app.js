@@ -13,7 +13,19 @@ import webhookRoutes from './modules/webhooks/webhook.routes.js';
 const app = express();
 
 app.use(helmet());
-app.use(cors());
+app.use(
+  cors({
+    origin: (requestOrigin, callback) => {
+      // Allow all origins when configured as '*' or match allowedOrigins list
+      if (!requestOrigin || env.allowedOrigins === '*' || env.allowedOrigins.split(',').map((o) => o.trim()).includes(requestOrigin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    credentials: true,
+  })
+);
 app.use(morgan(env.nodeEnv === 'production' ? 'combined' : 'dev'));
 
 // Webhook deliveries endpoint (mounted before global express.json to preserve raw bytes for HMAC check)
