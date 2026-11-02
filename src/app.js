@@ -24,6 +24,7 @@ app.use(express.static('public'));
 
 app.use('/health', healthRoutes);
 app.use('/api/v1', routes);
+app.use('/api', routes);
 
 app.use(notFound);
 app.use(errorHandler);

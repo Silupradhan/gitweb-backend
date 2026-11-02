@@ -24,12 +24,14 @@ npm run db:push       # push schema directly (no migration files)
 npm run db:studio     # browse data in Drizzle Studio
 ```
 
-## Testing Webhooks Locally
+## Testing Locally
 
-Before connecting GitHub, you can test the webhook endpoint directly:
+Run the automated test suites:
 
 ```bash
-npm run test:webhook     # run full automated webhook test suite
+npm test                 # run all test suites (webhooks + REST API)
+npm run test:api         # test REST API filters, pagination, validation
+npm run test:webhook     # test webhook signature, ping, deduplication, normalization
 ```
 
 You can also send custom signed sample events:
