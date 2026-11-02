@@ -5,12 +5,15 @@
   "main": "src/server.js",
   "type": "module",
   "scripts": {
+    "build": "node --check src/server.js && node --check src/app.js",
     "dev": "nodemon src/server.js",
     "start": "node src/server.js",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
-    "db:studio": "drizzle-kit studio"
+    "db:studio": "drizzle-kit studio",
+    "test:webhook": "node scripts/test-webhooks.js",
+    "webhook:send": "node scripts/send-sample-event.js"
   },
   "keywords": [],
   "license": "ISC",
