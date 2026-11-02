@@ -12,8 +12,9 @@
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
-    "test": "npm run test:webhook && npm run test:api",
+    "test": "npm run test:webhook && npm run test:api && npm run test:sse",
     "test:api": "node scripts/test-api.js",
+    "test:sse": "node scripts/test-sse.js",
     "test:webhook": "node scripts/test-webhooks.js",
     "webhook:send": "node scripts/send-sample-event.js"
   },

@@ -1,6 +1,21 @@
 import { eventService, decodeCursor } from './event.service.js';
+import { sseManager } from './sse.manager.js';
 
 export const eventController = {
+  /**
+   * GET /events/stream - Server-Sent Events live feed stream (FR-7.1, FR-7.3, FR-7.4).
+   */
+  stream(req, res) {
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Cache-Control', 'no-cache, no-transform');
+    res.setHeader('Connection', 'keep-alive');
+    res.setHeader('X-Accel-Buffering', 'no');
+    if (typeof res.flushHeaders === 'function') {
+      res.flushHeaders();
+    }
+
+    sseManager.addClient(req, res);
+  },
   /**
    * GET /events - List events with multi-field filtering and cursor pagination (FR-5.1 to FR-5.4).
    */

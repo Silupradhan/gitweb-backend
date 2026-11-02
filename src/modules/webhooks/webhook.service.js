@@ -6,6 +6,7 @@ import { events } from '../events/event.schema.js';
 import { repositories } from '../repositories/repository.schema.js';
 import { githubUsers } from '../github-users/github-user.schema.js';
 import { normalizeEvent } from '../events/event.normalizer.js';
+import { sseManager } from '../events/sse.manager.js';
 
 /**
  * Validates GitHub's HMAC SHA-256 signature using a timing-safe comparison.
@@ -160,10 +161,27 @@ export const webhookService = {
           status: 'received',
         })
         .onConflictDoNothing({ target: events.deliveryId })
-        .returning({ id: events.id, status: events.status });
+        .returning({ id: events.id, status: events.status, receivedAt: events.receivedAt });
 
       return savedEvent;
     });
+
+    // FR-7.2: Broadcast to connected SSE dashboards strictly after DB transaction commits
+    if (result && result.id) {
+      const broadcastEvent = {
+        id: result.id,
+        eventType,
+        action: action || payload.action || null,
+        title,
+        receivedAt: (result.receivedAt ? new Date(result.receivedAt) : new Date()).toISOString(),
+        repositoryName: payload.repository?.full_name || payload.repository?.name || null,
+        senderName: payload.sender?.login || null,
+        senderAvatar: payload.sender?.avatar_url || null,
+        sourceLink: sourceUrl,
+      };
+
+      sseManager.broadcast(broadcastEvent);
+    }
 
     return {
       isDuplicate: false,
