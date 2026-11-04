@@ -40,6 +40,10 @@ export const env = {
   port: Number(process.env.PORT) || 3000,
   databaseUrl: process.env.DATABASE_URL || '',
   webhookSecret: process.env.WEBHOOK_SECRET || '',
+  githubClientId: process.env.GITHUB_CLIENT_ID || '',
+  githubClientSecret: process.env.GITHUB_CLIENT_SECRET || '',
+  githubCallbackUrl: process.env.GITHUB_CALLBACK_URL || 'http://localhost:3000/api/v1/auth/github/callback',
+  encryptionSecret: process.env.ENCRYPTION_SECRET || process.env.WEBHOOK_SECRET || 'default-fallback-encryption-secret-32-bytes!!',
   frontendUrl: process.env.FRONTEND_URL || 'http://localhost:3001',
   allowedOrigins: process.env.ALLOWED_ORIGINS || '*',
 };
