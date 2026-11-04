@@ -52,7 +52,7 @@ export const webhookService = {
    * Executes event normalization, repository and sender upserts, and event creation
    * in a single atomic database transaction (FR-4.1).
    */
-  async handleWebhook({ deliveryId, eventType, action, payload }) {
+  async handleWebhook({ deliveryId, eventType, action, payload, endpointId }) {
     // Ping events are test handshakes and do not need to be stored (FR-2.7, FR-3.3)
     if (eventType === 'ping') {
       return {
@@ -155,6 +155,7 @@ export const webhookService = {
           action: action || payload.action || null,
           repositoryId,
           senderId,
+          endpointId: endpointId || null,
           title,
           sourceUrl,
           payload,

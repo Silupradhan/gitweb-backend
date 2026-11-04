@@ -4,6 +4,7 @@
  */
 export * from '../modules/users/user.schema.js';
 export * from '../modules/auth/session.schema.js';
+export * from '../modules/endpoints/endpoint.schema.js';
 export * from '../modules/repositories/repository.schema.js';
 export * from '../modules/github-users/github-user.schema.js';
 export * from '../modules/events/event.schema.js';

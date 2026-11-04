@@ -35,7 +35,25 @@ async function ensureAuthSchema() {
           created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW() NOT NULL
         );
       `);
-      console.log('[db] Auth schema verified/migrated successfully.');
+
+      await client.query(`
+        CREATE TABLE IF NOT EXISTS webhook_endpoints (
+          id TEXT PRIMARY KEY,
+          user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+          name TEXT NOT NULL,
+          secret TEXT NOT NULL,
+          is_enabled BOOLEAN DEFAULT TRUE NOT NULL,
+          created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW() NOT NULL,
+          updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW() NOT NULL
+        );
+      `);
+
+      await client.query(`
+        ALTER TABLE events
+          ADD COLUMN IF NOT EXISTS endpoint_id TEXT REFERENCES webhook_endpoints(id) ON DELETE CASCADE;
+      `);
+
+      console.log('[db] Auth & webhook endpoints schema verified/migrated successfully.');
     } finally {
       client.release();
     }

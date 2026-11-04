@@ -2,6 +2,7 @@ import { Router } from 'express';
 
 import authRoutes from '../modules/auth/auth.routes.js';
 import userRoutes from '../modules/users/user.routes.js';
+import endpointRoutes from '../modules/endpoints/endpoint.routes.js';
 import eventRoutes from '../modules/events/event.routes.js';
 import repositoryRoutes from '../modules/repositories/repository.routes.js';
 import analyticsRoutes from '../modules/analytics/analytics.routes.js';
@@ -14,6 +15,7 @@ router.use('/auth', authRoutes);
 
 // Protected dashboard API routes (FR-9.5)
 router.use('/users', requireAuth, userRoutes);
+router.use('/endpoints', requireAuth, endpointRoutes);
 router.use('/events', requireAuth, eventRoutes);
 router.use('/repos', requireAuth, repositoryRoutes);
 router.use('/analytics', requireAuth, analyticsRoutes);

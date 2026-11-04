@@ -12,6 +12,7 @@ import {
 
 import { repositories } from '../repositories/repository.schema.js';
 import { githubUsers } from '../github-users/github-user.schema.js';
+import { webhookEndpoints } from '../endpoints/endpoint.schema.js';
 
 export const eventStatusEnum = pgEnum('event_status', ['received', 'processed', 'failed']);
 
@@ -29,6 +30,9 @@ export const events = pgTable(
       onDelete: 'set null',
     }),
     webhookEndpointId: text('webhook_endpoint_id'),
+    endpointId: text('endpoint_id').references(() => webhookEndpoints.id, {
+      onDelete: 'cascade',
+    }),
     title: text('title'),
     sourceUrl: text('source_url'),
     payload: jsonb('payload').notNull(),
